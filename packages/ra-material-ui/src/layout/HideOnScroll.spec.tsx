@@ -1,12 +1,20 @@
 import { render, screen } from "@utils/test-utils";
+import HideOnScroll from "./HideOnScroll";
 
-import HideOnScroll, { video } from "./HideOnScroll";
-import * as mui from "@material-ui/core";
+jest.mock("@material-ui/core", () => ({
+	...jest.requireActual("@material-ui/core"),
+	useScrollTrigger: jest.fn().mockReturnValue(true),
+}));
 
-// jest.mock('@material-ui/core', () => ({
-// 	useScrollTrigger: () => true;
-// }));
 describe("HideOnScroll", (): void => {
+	it("mock test", () => {
+		render(
+			<HideOnScroll>
+				<div>basic HideOnScroll</div>
+			</HideOnScroll>
+		);
+		screen.debug();
+	});
 	// it("should render basic HideOnScroll", () => {
 	// 	jest.spyOn(mui, 'useScrollTrigger').mockReturnValue(true);
 	// 	const { container } = render(

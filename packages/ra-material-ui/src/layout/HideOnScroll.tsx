@@ -22,11 +22,3 @@ export interface HideOnScrollProps {
 }
 
 export default HideOnScroll;
-
-const video = {
-  play() {
-    return false;
-  },
-};
-
-export {video};
