@@ -7,13 +7,16 @@ import {
 import ComponentPropType from '@utils/ComponentPropType';
 import HideOnScroll from "./HideOnScroll";
 
+/**
+ * The AppBar component render a custom MuiAppBar
+ */
 const AppBar = (props: AppBarProps): JSX.Element => {
 	const { container: Container = HideOnScroll } = props;
 	return (
 		<Container>
 			<MuiAppBar>
 				<Toolbar>
-					toolbar
+					toolbar佣人
 				</Toolbar>
 			</MuiAppBar>
 		</Container>

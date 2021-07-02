@@ -5,10 +5,11 @@
   "author": "lei <lei.wang0418@gmail.com>",
   "homepage": "https://github.com/leiwang0418/lerna-react.git",
   "license": "MIT",
-  "main": "src/index.ts",
+  "main": "src/index.tsx",
   "scripts": {
-    "styleguide": "styleguidist server",
-    "build": "styleguidist build"
+    "styleguide": "jest & styleguidist server",
+    "build": "jest & styleguidist build",
+    "test": "jest"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.4",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
+    "@testing-library/react-hooks": "^7.0.1",
     "@types/jest": "^26.0.23",
     "@types/react-is": "^17.0.1",
     "jest": "^26.6.3",

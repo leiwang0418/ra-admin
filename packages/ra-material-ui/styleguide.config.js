@@ -1,8 +1,8 @@
 const path = require("path");
 
-// components: "src/**/*.{js,jsx,ts,tsx}",
 module.exports = {
-    components: "src/**/*.ts",
+    components: "src/[A-Z]**/[A-Z]*.tsx",
+    skipComponentsWithoutExample: true,
     moduleAliases: {
         "@utils": path.resolve(__dirname, "src/utils"),
     },
