@@ -17,7 +17,6 @@ describe("HideOnScroll", (): void => {
 			</HideOnScroll>
 		);
 
-		screen.debug();
 		expect(container).toMatchSnapshot();
 	});
 
@@ -29,7 +28,6 @@ describe("HideOnScroll", (): void => {
 			</HideOnScroll>
 		);
 
-		screen.debug();
 		expect(container).toMatchSnapshot();
 	});
 });
