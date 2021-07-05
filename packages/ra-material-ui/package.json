@@ -7,9 +7,9 @@
   "license": "MIT",
   "main": "src/index.tsx",
   "scripts": {
-    "styleguide": "jest & styleguidist server",
-    "build": "jest & styleguidist build",
-    "test": "jest"
+    "styleguide": "styleguidist server",
+    "build": "styleguidist build",
+    "test": "jest --watchAll"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.4",
