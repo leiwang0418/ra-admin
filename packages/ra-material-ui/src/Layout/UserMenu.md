@@ -1,0 +1,5 @@
+UserMenu:
+
+```js
+<UserMenu />
+```
