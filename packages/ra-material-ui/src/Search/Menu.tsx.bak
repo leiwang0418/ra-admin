@@ -1,0 +1,100 @@
+import PropTypes, { InferProps } from "prop-types";
+import { defineMessages, useIntl } from "react-intl";
+import { styled } from "@material-ui/core/styles";
+import MenuList from "@material-ui/core/MenuList";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Typography from "@material-ui/core/Typography";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import CloseIcon from "@material-ui/icons/Close";
+import Tooltip, {
+	TooltipProps,
+	tooltipClasses,
+} from "@material-ui/core/Tooltip";
+import HistoryIcon from "@material-ui/icons/History";
+
+const RemoveItemIcon = styled(ListItemIcon)(() => ({
+	cursor: "pointer",
+}));
+
+const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
+	<Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+	[`& .${tooltipClasses.tooltip}`]: {
+		backgroundColor: theme.palette.common.white,
+		color: "rgba(0, 0, 0, 0.87)",
+		boxShadow: theme.shadows[1],
+		fontSize: 11,
+	},
+}));
+
+const MenuPropTypes = {
+	isOpen: PropTypes.bool,
+	removeLabel: PropTypes.object,
+	items: PropTypes.shape({
+		config: PropTypes.shape({
+			icon: PropTypes.element
+			,
+		}),
+		data: PropTypes.arrayOf(
+			PropTypes.shape({
+				id: PropTypes.number.isRequired,
+				content: PropTypes.string.isRequired,
+			})
+		),
+	}),
+};
+
+export type MenuTypes = InferProps<typeof MenuPropTypes>;
+
+const Menu = (props: MenuTypes) => {
+	const {
+		isOpen = true,
+		removeLabel = messages["ra.defaultSearch.remove.label"],
+	} = props;
+	const intl = useIntl();
+
+	if (!isOpen) {
+		return null;
+	}
+	return (
+		<MenuList>
+			<SearchItem>
+				<ListItemIcon>
+					<HistoryIcon fontSize="small" />
+				</ListItemIcon>
+				<ListItemText>
+					<Typography variant="inherit" noWrap>
+						A very long text that overflows Add space after
+						paragraphAdd space after paragraphAdd space after
+						paragraphAdd space after paragraphAdd space after
+						paragraphAdd space after paragraph
+					</Typography>
+				</ListItemText>
+				<LightTooltip
+					followCursor
+					placement="right"
+					title={removeLabel ? intl.formatMessage(removeLabel) : ""}
+				>
+					<RemoveItemIcon
+						onClick={() => console.log("remove history")}
+					>
+						<CloseIcon fontSize="small" />
+					</RemoveItemIcon>
+				</LightTooltip>
+			</SearchItem>
+			<SearchItem>Custom spacing</SearchItem>
+		</MenuList>
+	);
+};
+
+Menu.propTypes = MenuPropTypes;
+
+const messages = defineMessages({
+	"ra.defaultSearch.remove.label": {
+		id: "ra.defaultSearch.remove.label",
+		defaultMessage: "Remove from history",
+	},
+});
+
+export default Menu;

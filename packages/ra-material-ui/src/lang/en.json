@@ -1,0 +1,14 @@
+{
+  "ra.defaultSearch.clear.label": {
+    "defaultMessage": "Clear"
+  },
+  "ra.defaultSearch.placeholder": {
+    "defaultMessage": "Search..."
+  },
+  "ra.defaultSearch.search.label": {
+    "defaultMessage": "Search"
+  },
+  "ra.userMenu": {
+    "defaultMessage": "Profile"
+  }
+}

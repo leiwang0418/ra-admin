@@ -1,51 +1,96 @@
-import React from "react";
-import { Tooltip, IconButton } from "@material-ui/core";
+import { useState, Children, isValidElement, cloneElement } from "react";
+import { IconButton, Menu } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import PropTypes from "prop-types";
+import { defineMessage, useIntl, MessageDescriptor } from "react-intl";
 
-/*
-<Tooltip title={label && translate(label, { _: label })}>
-    <IconButton
-        aria-label={label && translate(label, { _: label })}
-        aria-owns={open ? 'menu-appbar' : null}
-        aria-haspopup={true}
-        color="inherit"
-        onClick={handleMenu}
-    >
-        {icon}
-    </IconButton>
-</Tooltip>
-*/
+const UserMenu = (props: UserMenuProps) => {
+	const { icon = <AccountCircle />, label = message, children } = props;
 
-const DefaultUserMenu = (props: DefaultUserMenuProps) => {
-	const { icon = <AccountCircle />, handleMenu } = props;
+	const intl = useIntl();
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-	return (
-		<Tooltip title="title">
-			<IconButton aria-label="" aria-owns="" color="inherit" onClick={handleMenu}>
+	if (!children) return null;
+
+	const handleMenu = (event: React.MouseEvent<HTMLButtonElement>): void =>
+		setAnchorEl(event.currentTarget);
+	const open = Boolean(anchorEl);
+	const handleClose = () => setAnchorEl(null);
+
+	const DefaultIcon = (<IconButton
+				aria-label={label && intl.formatMessage(label)}
+				onClick={handleMenu}
+				color="inherit"
+			>
 				{icon}
-			</IconButton>
-		</Tooltip>
+			</IconButton>);
+	return (
+		<>
+			{DefaultIcon}
+			<Menu
+				open={open}
+				anchorEl={anchorEl}
+				onClose={handleClose}
+				PaperProps={arrowPaperProps}
+				transformOrigin={{ horizontal: "right", vertical: "top" }}
+				anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+			>
+				{Children.map(children, (menuItem) =>
+					isValidElement(menuItem)
+						? cloneElement(menuItem, {
+								onClick: handleClose,
+						  })
+						: null
+				)}
+			</Menu>
+		</>
 	);
 };
 
-DefaultUserMenu.propTypes = {
+const message = defineMessage({
+	id: "ra.userMenu",
+	defaultMessage: "Profile",
+});
+
+UserMenu.propTypes = {
 	icon: PropTypes.node,
-	handleMenu: PropTypes.func.isRequired,
+	label: PropTypes.object,
+	children: PropTypes.node,
+	logout: PropTypes.element,
 };
 
-interface DefaultUserMenuProps {
+export interface UserMenuProps {
 	icon?: React.ReactNode;
-	handleMenu: () => void;
+	label?: MessageDescriptor;
+	children?: React.ReactNode;
+	logout?: React.ReactNode;
 }
 
-const UserMenu = () => {
-	const handleMenu = () => console.log("test");
-	return (
-		<div>
-			<DefaultUserMenu handleMenu={handleMenu} />
-		</div>
-	);
+const arrowPaperProps = {
+	elevation: 0,
+	sx: {
+		overflow: "visible",
+		filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+		mt: 1.5,
+		"& .MuiAvatar-root": {
+			width: 32,
+			height: 32,
+			ml: -0.5,
+			mr: 1,
+		},
+		"&:before": {
+			content: '""',
+			display: "block",
+			position: "absolute",
+			top: 0,
+			right: 14,
+			width: 10,
+			height: 10,
+			bgcolor: "background.paper",
+			transform: "translateY(-50%) rotate(45deg)",
+			zIndex: 0,
+		},
+	},
 };
 
 export default UserMenu;

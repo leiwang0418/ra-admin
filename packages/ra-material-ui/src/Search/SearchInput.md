@@ -1,0 +1,5 @@
+basic Search
+
+```js
+<SearchInput />
+```
