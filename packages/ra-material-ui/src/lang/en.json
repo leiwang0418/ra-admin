@@ -1,14 +1,17 @@
 {
   "ra.defaultSearch.clear.label": {
-    "defaultMessage": "Clear"
+    "defaultMessage": "Clear search"
   },
   "ra.defaultSearch.placeholder": {
     "defaultMessage": "Search..."
   },
+  "ra.defaultSearch.remove.label": {
+    "defaultMessage": "Remove from history"
+  },
   "ra.defaultSearch.search.label": {
     "defaultMessage": "Search"
   },
-  "ra.userMenu": {
-    "defaultMessage": "Profile"
+  "ra.defaultSearch.show.search.options.label": {
+    "defaultMessage": "Show search options"
   }
 }

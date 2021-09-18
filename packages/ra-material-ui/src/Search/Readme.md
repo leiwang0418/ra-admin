@@ -1,5 +1,5 @@
 basic Search
 
 ```js
-<SearchInput />
+<Search />
 ```

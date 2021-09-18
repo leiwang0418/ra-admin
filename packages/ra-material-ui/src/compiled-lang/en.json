@@ -1,6 +1,7 @@
 {
-  "ra.defaultSearch.clear.label": "Clear",
+  "ra.defaultSearch.clear.label": "Clear search",
   "ra.defaultSearch.placeholder": "Search...",
+  "ra.defaultSearch.remove.label": "Remove from history",
   "ra.defaultSearch.search.label": "Search",
-  "ra.userMenu": "Profile"
+  "ra.defaultSearch.show.search.options.label": "Show search options"
 }

@@ -1,4 +1,4 @@
-basic UserMenu:
+<!-- basic UserMenu:
 
 ```js
 import MenuItem from "@material-ui/core/MenuItem";
@@ -18,3 +18,4 @@ const label = {
 
 <UserMenu label={label} />;
 ```
+ -->

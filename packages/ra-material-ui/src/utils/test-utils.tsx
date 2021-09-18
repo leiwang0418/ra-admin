@@ -1,9 +1,9 @@
 import React, { FC } from "react";
-import { render, RenderOptions } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { IntlProvider } from "react-intl";
 import en from "../compiled-lang/en.json";
-import { ThemeProvider } from "@material-ui/styles";
-import { createTheme } from "@material-ui/core/styles";
+import { createTheme } from "@mui/material";
+import { ThemeProvider } from "@emotion/react";
 
 const theme = createTheme();
 
