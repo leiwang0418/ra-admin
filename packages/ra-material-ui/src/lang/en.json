@@ -5,9 +5,6 @@
   "ra.defaultSearch.placeholder": {
     "defaultMessage": "Search..."
   },
-  "ra.defaultSearch.remove.label": {
-    "defaultMessage": "Remove from history"
-  },
   "ra.defaultSearch.search.label": {
     "defaultMessage": "Search"
   },

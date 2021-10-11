@@ -1,8 +1,7 @@
 import { Component } from "react";
 import { IntlProvider } from "react-intl";
 import en from "../compiled-lang/en.json";
-import { createTheme } from "@mui/material";
-import { ThemeProvider } from "@emotion/react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme();
 

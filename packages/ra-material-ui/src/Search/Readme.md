@@ -1,5 +1,14 @@
 basic Search
 
 ```js
-<Search />
+const top100Films = [
+  "The Godfather: Part II",
+  "One Flew Over the Cuckoo's Nest",
+  "Goodfellas",
+  "The Matrix",
+  "Seven Samurai",
+  "Star Wars: Episode IV - A New Hope",
+];
+
+<Search id="testSearch" options={top100Films} />;
 ```
