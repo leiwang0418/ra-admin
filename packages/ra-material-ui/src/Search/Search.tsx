@@ -7,6 +7,8 @@ import {
 	Divider,
 	PaperProps,
 	useAutocomplete,
+	List,
+	ListItem,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
@@ -30,18 +32,16 @@ const SearchRoot = styled(Paper, {
 	...(focused && { boxShadow: theme.shadows[2] }),
 }));
 
-const Listbox = styled("ul")(({ theme }) => ({
-	width: 200,
+const SearchListbox = styled(List)(({ theme }) => ({
 	margin: 0,
 	padding: 0,
 	zIndex: 1,
 	position: "absolute",
-	listStyle: "none",
+	listStyle: "disc",
 	backgroundColor: theme.palette.background.paper,
 	overflow: "auto",
-	maxHeight: 200,
 	border: "1px solid rgba(0,0,0,.25)",
-	'& li[data-focus="true"]': {
+	'&[data-focus="true"]': {
 		backgroundColor: "#4a8df6",
 		color: "white",
 		cursor: "pointer",
@@ -50,16 +50,22 @@ const Listbox = styled("ul")(({ theme }) => ({
 		backgroundColor: "red",
 		color: "white",
 	},
+	"& .Mui-focused": {
+		backgroundColor: "blue",
+	},
 }));
+
+const SearchItem = styled(ListItem)(({ theme }) => ({}));
 
 const SearchInputBaseTypes = {
 	placeholderLabel: PropTypes.object,
 	clearLabel: PropTypes.object,
 	searchLabel: PropTypes.object,
-	focused: PropTypes.bool,
+	removeLabel: PropTypes.object,
 	id: PropTypes.string.isRequired,
 	options: PropTypes.array.isRequired,
 	onInputChange: PropTypes.func,
+	width: PropTypes.number,
 };
 
 export type SearchTypes = InferProps<typeof SearchInputBaseTypes>;
@@ -71,25 +77,36 @@ interface SearchTypesWithoutDefaultProps
 		| "clearLabel"
 		| "searchLabel"
 		| "removeLabel"
-		| "PopperComponent"
-		| "ListboxComponent"
-		| "renderOption"
-		| "focused"
 		| "onInputChange"
+		| "width"
 	> {}
 
 const Search = (props: SearchTypesWithoutDefaultProps) => {
+	const intl = useIntl();
+	const [inputValue, setInputValue] = useState<string | undefined>("");
+	const [open, setOpen] = useState<boolean>(true);
+	const [options, setOptions] = useState<string[]>([]);
+
 	const {
 		placeholderLabel = messages.placeholder,
 		clearLabel = messages.clearLabel,
 		searchLabel = messages.searchLabel,
 		showSearchOptions = messages.showSearchOptions,
-		getOptionLabel = (option) => option.label ?? option,
-		onInputChange = (event, value) => setInputValue(value),
+		options: optionProps,
+		getOptionLabel = (option: typeof props.options[0]) =>
+			option.label ?? option,
+		onInputChange = (event: React.SyntheticEvent, value: string) => {
+			if (value.length > 0) {
+				// setOptions(searchOptions, [...optionProps, `More search for '${value}'`]);
+				setOptions([...optionProps, value]);
+			}
+			setInputValue(value);
+			setOpen(true);
+		},
+		onClose = () => setOpen(false),
 		freeSolo = true,
+		width = 0,
 	} = { ...props };
-	const [inputValue, setInputValue] = useState<string | null>("");
-	const intl = useIntl();
 
 	const {
 		getRootProps,
@@ -99,23 +116,59 @@ const Search = (props: SearchTypesWithoutDefaultProps) => {
 		getOptionProps,
 		groupedOptions,
 		focused,
-		dirty,
+		anchorEl,
+		setAnchorEl,
 	} = useAutocomplete({
 		...props,
+		options,
 		getOptionLabel,
 		value: inputValue,
 		inputValue,
 		onInputChange,
 		freeSolo,
+		open,
+		onClose,
 		componentName: "SearchComponent",
 	});
 
+	const renderHistoryOption = (props2: any, option: any) => (
+		<li {...props2}>{getOptionLabel(option)}</li>
+	);
+
+	const renderDataOption = (props2: any, option: any) => (
+		<li {...props2}>{getOptionLabel(option)}</li>
+	);
+
+	const renderTipOption = (props2: any, option: any) => (
+		<li {...props2}>{getOptionLabel(option)}</li>
+	);
+
+	const renderListOption = (option: any, index: number) => {
+		const optionProps = getOptionProps({ option, index });
+		const length = groupedOptions.length;
+
+		return <SearchItem>testas</SearchItem>;
+		// if (index + 1 == length) {
+		// 	return renderHistoryOption({ ...optionProps }, option);
+		// } else {
+		// 	return renderDataOption({ ...optionProps }, option);
+		// }
+	};
+
+	console.log("width", width);
+	console.log("anchorEl.clientWidth", anchorEl?.clientWidth);
 	return (
 		<React.Fragment>
 			<SearchRoot
+				ref={setAnchorEl}
 				focused={focused}
 				elevation={focused ? 1 : 0}
-				sx={{ p: "2px 4px", display: "flex", alignItems: "center" }}
+				sx={{
+					p: "2px 4px",
+					display: "flex",
+					alignItems: "center",
+					width: width || null,
+				}}
 				{...getRootProps()}
 			>
 				<IconButton
@@ -134,12 +187,22 @@ const Search = (props: SearchTypesWithoutDefaultProps) => {
 				/>
 				<IconButton
 					{...getClearProps()}
-					sx={{ p: "10px", visibility: inputValue.length > 0 ? "visible" : "hidden" }}
+					sx={{
+						p: "10px",
+						visibility: inputValue! ? "visible" : "hidden",
+					}}
 					aria-label={intl.formatMessage(clearLabel)}
 				>
 					<ClearIcon />
 				</IconButton>
-				<Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+				<Divider
+					sx={{
+						height: 28,
+						m: 0.5,
+						visibility: inputValue! ? "visible" : "hidden",
+					}}
+					orientation="vertical"
+				/>
 				<IconButton
 					sx={{ p: "10px" }}
 					aria-label={intl.formatMessage(showSearchOptions)}
@@ -147,16 +210,19 @@ const Search = (props: SearchTypesWithoutDefaultProps) => {
 					<TuneIcon />
 				</IconButton>
 			</SearchRoot>
-			{groupedOptions.length > 0 ? (
-				<Listbox {...getListboxProps()}>
-					{(groupedOptions as typeof top100Films).map(
-						(option, index) => (
-							<li {...getOptionProps({ option, index })}>
-								{option}
-							</li>
-						)
-					)}
-				</Listbox>
+			{anchorEl && inputValue! && focused ? (
+				<SearchListbox
+					{...getListboxProps()}
+					sx={{
+						width: anchorEl ? anchorEl.clientWidth : null,
+					}}
+				>
+					{groupedOptions.length > 0
+						? groupedOptions.map((option, index) =>
+								renderListOption(option, index)
+						  )
+						: null}
+				</SearchListbox>
 			) : null}
 		</React.Fragment>
 	);

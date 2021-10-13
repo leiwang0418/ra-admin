@@ -10,5 +10,5 @@ const top100Films = [
   "Star Wars: Episode IV - A New Hope",
 ];
 
-<Search id="testSearch" options={top100Films} />;
+<Search id="testSearch" width={500} options={top100Films} />;
 ```
